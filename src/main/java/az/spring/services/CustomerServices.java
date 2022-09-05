@@ -1,12 +1,17 @@
 package az.spring.services;
 
+import az.spring.dto.AccountDTO;
+import az.spring.dto.CustomerDTO;
+import az.spring.model.Account;
 import az.spring.model.Customer;
 import az.spring.repository.CustomerRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServices {
@@ -18,28 +23,49 @@ public class CustomerServices {
         this.customerRepository = customerRepository;
     }
 
-    public List<Customer> getAll() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAll() {
+        List<CustomerDTO> customerDTOS= customerRepository.findAll()
+                .stream()
+                .map(customer -> convertToDTO(customer))
+                .collect(Collectors.toList());
+        return customerDTOS;
     }
 
-    public Customer getById(int id) {
-        Optional<Customer> customer = customerRepository.findById(id);
+    private CustomerDTO convertToDTO( Customer customer) {
+        CustomerDTO customerDTO=new CustomerDTO();
+        BeanUtils.copyProperties(customer, customerDTO);
+        customerDTO.setAccountDTOS(customer.getAccounts()
+                .stream()
+                .map(account -> convertToAccDTO(account))
+                .collect(Collectors.toList()));
+        return customerDTO;
+    }
+
+    private AccountDTO convertToAccDTO(Account account) {
+        AccountDTO accountDTO= new AccountDTO();
+        BeanUtils.copyProperties(account, accountDTO);
+        return  accountDTO;
+    }
+
+    public CustomerDTO getById(int id) {
+        Optional<CustomerDTO> customer = customerRepository.findById(id)
+                .map(customer1 -> convertToDTO(customer1));
         if (customer.isPresent()) {
-            customer.get();
+           return customer.get();
         }
         return null;
     }
 
-    public void add(Customer customer) {
-        Customer customer1 = addCustomer(customer);
+    public void add(CustomerDTO customerDTO) {
+        Customer customer1 = addCustomer(customerDTO);
         customerRepository.save(customer1);
     }
 
-    public void upDate(int id, Customer customer) {
+    public void upDate(int id, CustomerDTO customerDTO) {
         Optional<Customer> customer1 = customerRepository.findById(id);
         if (customer1.isPresent()) {
             Customer customer2 = customer1.get();
-            convert(customer, customer2);
+            convert(customerDTO, customer2);
         }
     }
 
@@ -48,19 +74,30 @@ public class CustomerServices {
     }
 
 
-    private void convert(Customer getCustomer, Customer setCustomer) {
-        setCustomer.setName(getCustomer.getName());
-        setCustomer.setSurname(getCustomer.getSurname());
-        setCustomer.setEmail(getCustomer.getEmail());
-        setCustomer.setAge(getCustomer.getAge());
-        setCustomer.setBirthDate(getCustomer.getBirthDate());
-        setCustomer.setUserName(getCustomer.getUserName());
-        setCustomer.setPassword(getCustomer.getPassword());
+    private void convert(CustomerDTO getCustomerDTO, Customer setCustomer) {
+        setCustomer.setName(getCustomerDTO.getName());
+        setCustomer.setSurname(getCustomerDTO.getSurname());
+        setCustomer.setEmail(getCustomerDTO.getEmail());
+        setCustomer.setAge(getCustomerDTO.getAge());
+        setCustomer.setBirthDate(getCustomerDTO.getBirthDate());
+        setCustomer.setUserName(getCustomerDTO.getUserName());
+        setCustomer.setPassword(getCustomerDTO.getPassword());
+//        setCustomer.setAccounts(getCustomerDTO.getAccountDTOS()
+//                .stream()
+//                .map(accountDTO -> converToAccount(accountDTO))
+//                .collect(Collectors.toList()));
     }
 
-    private Customer addCustomer(Customer customer) {
+    public  Account converToAccount(AccountDTO accountDTO){
+        Account account=new Account();
+        BeanUtils.copyProperties(accountDTO, account);
+        return account;
+    }
+
+    private Customer addCustomer(CustomerDTO customerDTO) {
         Customer customer1 = new Customer();
-        convert(customer, customer1);
+        convert(customerDTO, customer1);
+        customer1.setName(customerDTO.getName());
         return customer1;
     }
 }

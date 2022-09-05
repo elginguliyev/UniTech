@@ -1,21 +1,23 @@
 package az.spring.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "customer")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String surname;
@@ -26,6 +28,12 @@ public class Customer {
     private String userName;
     private String password;
 
+    @OneToMany
+    @JoinTable(name = "customer_account",
+            joinColumns = @JoinColumn(name = "customer_Id"),
+            inverseJoinColumns = @JoinColumn(name = "account__Id"))
+    private List<Account> accounts;
+
     public Customer(String name, String surname, String email, int age, Date birthDate, String userName, String password) {
         this.name = name;
         this.surname = surname;
@@ -34,5 +42,13 @@ public class Customer {
         this.birthDate = birthDate;
         this.userName = userName;
         this.password = password;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }
