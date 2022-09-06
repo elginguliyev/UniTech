@@ -2,7 +2,10 @@ package az.spring;
 
 import az.spring.dto.AccountDTO;
 import az.spring.dto.CustomerDTO;
+import az.spring.model.Account;
 import az.spring.model.Customer;
+import az.spring.repository.AccountRepositoriy;
+import az.spring.repository.CustomerRepository;
 import az.spring.services.AccountServices;
 import az.spring.services.CustomerServices;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -33,22 +37,24 @@ public class UniTechApplication {
             @Override
             public void run(String... args) throws Exception {
 
-                CustomerDTO customerDTO = new CustomerDTO("eli", "eliyev", null, 1, null, null, null);
-                AccountDTO accountDTO = new AccountDTO(100, 50, 50);
-                AccountDTO accountDTO11 = new AccountDTO(100, 50, 50);
-//
-                List<AccountDTO> accountDTOS = Arrays.asList(accountDTO, accountDTO11);
-                customerDTO.setAccountDTOS(accountDTOS);
-                customerServices.add(customerDTO);
+                CustomerDTO customerDTO = new CustomerDTO("eli", "eliyev", null, 12, new Date(), null, null);
+                CustomerDTO customerDTO1 = new CustomerDTO("eli", "eliyev", null, 1, null, null, null);
+
+                AccountDTO accountDTO = new AccountDTO(1200, 3000, 50);
+                AccountDTO accountDTO1 = new AccountDTO(2100, 4000, 60);
+//                List<Account> accounts = Arrays.asList(account, account1);
+
+//                customerServices.add(customerDTO);
 //                accountServices.add(accountDTO);
+//                  customerServices.delete(2);
+                  accountServices.delete(4);
 
-//                List<CustomerDTO> customers = customerServices.getAll();
-//                System.out.println(customers);
+                List<CustomerDTO> customers = customerServices.getAll();
+                System.out.println(customers);
 
-//                List<AccountDTO> accountDTO1=accountServices.getAllAccount();
-//                System.out.println(accountDTO1);
-//                CustomerDTO customerDTO1=customerServices.getById(3);
-//                System.out.println(customerDTO1);
+                List<AccountDTO> accountDTO12=accountServices.getAllAccount();
+                System.out.println(accountDTO12);
+
             }
         };
 

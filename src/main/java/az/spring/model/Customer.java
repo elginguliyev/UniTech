@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 @Table(name = "customer")
 @Setter
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
 
@@ -28,11 +28,11 @@ public class Customer {
     private String userName;
     private String password;
 
-    @OneToMany
-    @JoinTable(name = "customer_account",
-            joinColumns = @JoinColumn(name = "customer_Id"),
-            inverseJoinColumns = @JoinColumn(name = "account__Id"))
-    private List<Account> accounts;
+    @OneToMany(mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+    private List<Account> accounts = new ArrayList<>();
+
 
     public Customer(String name, String surname, String email, int age, Date birthDate, String userName, String password) {
         this.name = name;
@@ -44,11 +44,18 @@ public class Customer {
         this.password = password;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", birthDate=" + birthDate +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", accounts=" + accounts +
+                '}';
     }
 }

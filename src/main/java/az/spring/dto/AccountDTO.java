@@ -2,9 +2,10 @@ package az.spring.dto;
 
 public class AccountDTO {
     private int accountId;
-    private  double balance;
-    private  double deposit;
-    private  double withdraw;
+    private double balance;
+    private double deposit;
+    private double withdraw;
+
     public AccountDTO() {
     }
 

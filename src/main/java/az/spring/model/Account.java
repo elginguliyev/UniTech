@@ -18,6 +18,17 @@ public class Account {
     private double balance;
     private double deposit;
     private double withdraw;
-//    @ManyToOne()
-//    private Customer customer;
+   @ManyToOne()
+   @JoinColumn(name = "customer_id")
+   private Customer customer;
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId=" + accountId +
+                ", balance=" + balance +
+                ", deposit=" + deposit +
+                ", withdraw=" + withdraw +
+                '}';
+    }
 }

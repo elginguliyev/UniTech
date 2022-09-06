@@ -17,7 +17,6 @@ public class AccountServices {
 
     private final AccountRepositoriy accountRepositoriy;
 
-
     public List<AccountDTO> getAllAccount() {
         List<AccountDTO> accountDTOS = accountRepositoriy.findAll()
                 .stream()
@@ -31,10 +30,22 @@ public class AccountServices {
         BeanUtils.copyProperties(account, accountDTO);
         return accountDTO;
     }
+
       public void  add(AccountDTO accountDTO){
         Account account=new Account();
         BeanUtils.copyProperties(accountDTO, account);
         accountRepositoriy.save(account);
       }
+
+      public  void delete( int id){
+        accountRepositoriy.deleteById(id);
+      }
+
+
+
+
+
+
+
 
 }

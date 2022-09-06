@@ -5,6 +5,7 @@ import az.spring.dto.CustomerDTO;
 import az.spring.model.Account;
 import az.spring.model.Customer;
 import az.spring.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerServices {
 
     private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerServices(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
 
     public List<CustomerDTO> getAll() {
         List<CustomerDTO> customerDTOS= customerRepository.findAll()
@@ -82,16 +79,6 @@ public class CustomerServices {
         setCustomer.setBirthDate(getCustomerDTO.getBirthDate());
         setCustomer.setUserName(getCustomerDTO.getUserName());
         setCustomer.setPassword(getCustomerDTO.getPassword());
-//        setCustomer.setAccounts(getCustomerDTO.getAccountDTOS()
-//                .stream()
-//                .map(accountDTO -> converToAccount(accountDTO))
-//                .collect(Collectors.toList()));
-    }
-
-    public  Account converToAccount(AccountDTO accountDTO){
-        Account account=new Account();
-        BeanUtils.copyProperties(accountDTO, account);
-        return account;
     }
 
     private Customer addCustomer(CustomerDTO customerDTO) {
