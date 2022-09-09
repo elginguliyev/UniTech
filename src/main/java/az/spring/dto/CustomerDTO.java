@@ -1,6 +1,5 @@
 package az.spring.dto;
 
-import az.spring.response.AccountResponse;
 
 import java.util.Date;
 import java.util.List;

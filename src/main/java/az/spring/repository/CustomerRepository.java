@@ -9,7 +9,10 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
-       List<Customer> getByNameAndSurname(String name , String surname);
+    List<Customer> getByNameAndSurname(String name, String surname);
 
-       Customer getByUserName(String name);
+    Customer getByUserName(String name);
+
+    Customer getByUserNameAndPassword(String userName, String password);
+
 }

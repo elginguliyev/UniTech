@@ -6,13 +6,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Entity
 @Table(name = "customer")
 @Setter
 @Getter
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
 
@@ -29,10 +28,8 @@ public class Customer {
     private String password;
 
     @OneToMany(mappedBy = "customer",
-            cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
     private List<Account> accounts = new ArrayList<>();
-
 
     public Customer(String name, String surname, String email, int age, Date birthDate, String userName, String password) {
         this.name = name;
@@ -42,20 +39,5 @@ public class Customer {
         this.birthDate = birthDate;
         this.userName = userName;
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", birthDate=" + birthDate +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", accounts=" + accounts +
-                '}';
     }
 }
